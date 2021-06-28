@@ -1,48 +1,8 @@
 import React from "react";
-import styled from "styled-components";
 import { useTable, usePagination } from "react-table";
 
 import makeData from "../makeData";
-
-const Styles = styled.div`
-  padding: 1rem;
-
-  table {
-    border-spacing: 0;
-    border: 1px solid black;
-
-    tr {
-      :last-child {
-        td {
-          border-bottom: 0;
-        }
-      }
-    }
-
-    th,
-    td {
-      margin: 0;
-      padding: 0.5rem;
-      border-bottom: 1px solid black;
-      border-right: 1px solid black;
-
-      :last-child {
-        border-right: 0;
-      }
-
-      input {
-        font-size: 1rem;
-        padding: 0;
-        margin: 0;
-        border: 0;
-      }
-    }
-  }
-
-  .pagination {
-    padding: 0.5rem;
-  }
-`;
+import Pagination from "../commons/Pagination";
 
 // Create an editable cell renderer
 const EditableCell = ({
@@ -115,6 +75,7 @@ const Table = ({
     {
       columns,
       data,
+      // defaultColumn값의 설정에 따라서 edit여부 결정
       defaultColumn,
       // use the skipPageReset option to disable page resetting temporarily
       autoResetPage: true,
@@ -148,7 +109,12 @@ const Table = ({
               <tr {...row.getRowProps()}>
                 {row.cells.map((cell) => {
                   return (
-                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                    <td {...cell.getCellProps()}>
+                      {/* <span>{cell.value}</span> */}
+                      {cell.render("Cell")}
+                      {/* <span>O</span>
+                      <span>X</span> */}
+                    </td>
                   );
                 })}
               </tr>
@@ -156,50 +122,18 @@ const Table = ({
           })}
         </tbody>
       </table>
-      <div className="pagination">
-        <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-          {"<<"}
-        </button>{" "}
-        <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-          {"<"}
-        </button>{" "}
-        <button onClick={() => nextPage()} disabled={!canNextPage}>
-          {">"}
-        </button>{" "}
-        <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
-          {">>"}
-        </button>{" "}
-        <span>
-          Page{" "}
-          <strong>
-            {pageIndex + 1} of {pageOptions.length}
-          </strong>{" "}
-        </span>
-        <span>
-          | Go to page:{" "}
-          <input
-            type="number"
-            defaultValue={pageIndex + 1}
-            onChange={(e) => {
-              const page = e.target.value ? Number(e.target.value) - 1 : 0;
-              gotoPage(page);
-            }}
-            style={{ width: "100px" }}
-          />
-        </span>{" "}
-        <select
-          value={pageSize}
-          onChange={(e) => {
-            setPageSize(Number(e.target.value));
-          }}
-        >
-          {[10, 20, 30, 40, 50].map((pageSize) => (
-            <option key={pageSize} value={pageSize}>
-              Show {pageSize}
-            </option>
-          ))}
-        </select>
-      </div>
+      <Pagination
+        canPreviousPage={canPreviousPage}
+        canNextPage={canNextPage}
+        pageOptions={pageOptions}
+        pageCount={pageCount}
+        gotoPage={gotoPage}
+        nextPage={nextPage}
+        previousPage={previousPage}
+        setPageSize={setPageSize}
+        pageIndex={pageIndex}
+        pageSize={pageSize}
+      />
     </>
   );
 };
@@ -287,7 +221,7 @@ const App = () => {
   const resetData = () => setData(originalData);
 
   return (
-    <Styles>
+    <>
       <button onClick={resetData}>Reset Data</button>
       <Table
         columns={columns}
@@ -295,7 +229,7 @@ const App = () => {
         updateMyData={updateMyData}
         skipPageReset={skipPageReset}
       />
-    </Styles>
+    </>
   );
 };
 
