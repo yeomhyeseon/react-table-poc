@@ -1,8 +1,11 @@
 import React from "react";
-import EditTable from "./table/EditTable";
-import FilterTable from "./table/FilterTable";
-import SubComponentsTable from "./table/SubComponentsTable";
-import DefaultTable from "./table/DefaultTable";
+// import EditTable from "./table/EditTable";
+// import FilterTable from "./table/FilterTable";
+// import SubComponentsTable from "./table/SubComponentsTable";
+// import DefaultTable from "./table/DefaultTable";
+// import SortTable from "./table/SortTable";
+// import PaginationTable from "./table/PaginationTable";
+import CustomColumnWidthTable from "./table/CustomColumnWidthTable";
 import styled from "styled-components";
 
 const Styles = styled.div`
@@ -44,10 +47,13 @@ const Styles = styled.div`
 const App = () => {
   return (
     <Styles>
-      <SubComponentsTable />
+      {/* <SubComponentsTable />
       <FilterTable />
       <EditTable />
-      <DefaultTable />
+      <DefaultTable /> */}
+      {/* <SortTable /> */}
+      {/* <PaginationTable /> */}
+      <CustomColumnWidthTable />
     </Styles>
   );
 };
